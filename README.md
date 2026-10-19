@@ -1,6 +1,6 @@
-<p align="center"><img src="simge.png" width="128" alt="fthmrl tiff viewer simgesi"></p>
+<p align="center"><img src="simge.png" width="128" alt="TIFF Viewer simgesi"></p>
 
-<h1 align="center">fthmrl tiff viewer</h1>
+<h1 align="center">TIFF Viewer</h1>
 
 <p align="center"><b>Avukatlar için macOS'te UYAP/EBYS TIFF belgelerini açan, ücretsiz ve açık kaynak okuyucu.</b></p>
 
@@ -10,7 +10,7 @@
 
 UYAP ve EBYS'den indirilen tutanak, ifade ve yazıların önemli bir kısmı **eski tip JPEG sıkıştırmalı TIFF** olarak geliyor. Mac'in kendi programları (Önizleme, Hızlı Bakış, Fotoğraflar) bu eski türü desteklemediği için belge ya hiç açılmıyor ya da boş görünüyor.
 
-**fthmrl tiff viewer**, meslektaşlarımın Mac'te bu belgelerle uğraşmadan, rahatça çalışabilmesi için yazıldı: TIFF'e çift tıklarsınız, belge Mac'in alışık olduğunuz **Önizleme** uygulamasında açılır. Hepsi bu.
+**TIFF Viewer**, meslektaşlarımın Mac'te bu belgelerle uğraşmadan, rahatça çalışabilmesi için yazıldı: TIFF'e çift tıklarsınız, belge Mac'in alışık olduğunuz **Önizleme** uygulamasında açılır. Hepsi bu.
 
 ## Özellikler
 
@@ -33,12 +33,37 @@ UYAP ve EBYS'den indirilen tutanak, ifade ve yazıların önemli bir kısmı **e
 
 > Gereksinim: **Apple Silicon (M1, M2, M3, M4…) işlemcili Mac**, macOS 12 veya üzeri.
 
-1. Sağdaki **Releases** bölümünden son sürümün `fthmrlTiffViewer-vN.zip` dosyasını indirin.
-2. Zip'e çift tıklayın, çıkan **fthmrl tiff viewer** uygulamasını **Programlar** klasörüne sürükleyin.
-3. İlk açılışta macOS "geliştiricisi doğrulanamadı" uyarısı verir (program App Store'dan gelmediği için). Uyarıyı kapatın, **Sistem Ayarları → Gizlilik ve Güvenlik**'te en altta **Yine de Aç**'a basın. Bu yalnızca bir kez gerekir.
-4. TIFF'lerin hep bununla açılması için: herhangi bir `.tif` dosyasına sağ tıklayın → **Bilgi Al** → **Birlikte Aç**: *fthmrl tiff viewer* → **Tümünü Değiştir**.
+Üç yoldan birini seçin. Kutuların sağ üstündeki kopyala düğmesiyle tek tıkla kopyalayabilirsiniz.
 
-Artık TIFF'e çift tıklamanız yeterli.
+### 1. Terminal ile (en hızlısı)
+
+**Terminal** uygulamasını açın (Spotlight'ta "Terminal" yazın), aşağıdaki satırı yapıştırıp Enter'a basın:
+
+```bash
+curl -fsSL https://github.com/fthmrl/tiff-viewer/releases/latest/download/TiffViewer.zip -o /tmp/TiffViewer.zip && ditto -x -k /tmp/TiffViewer.zip /Applications && xattr -dr com.apple.quarantine "/Applications/TIFF Viewer.app" && echo "TIFF Viewer kuruldu."
+```
+
+Bu satır son sürümü indirir, **Programlar** klasörüne koyar ve macOS'in "geliştirici doğrulanamadı" uyarısını baştan kaldırır.
+
+### 2. Claude ile
+
+Mac'inizde [Claude](https://claude.ai/download) (Claude Code) varsa, aşağıdaki metni kopyalayıp Claude'a yapıştırın; kurulumu ve varsayılan uygulama ayarını o yapar:
+
+```text
+GitHub'daki fthmrl/tiff-viewer uygulamasını bu Mac'e kur: https://github.com/fthmrl/tiff-viewer/releases/latest/download/TiffViewer.zip dosyasını indir, /Applications klasörüne aç, "TIFF Viewer.app" üzerindeki karantina işaretini kaldır ve TIFF (public.tiff) dosyaları için varsayılan uygulama olarak ayarla.
+```
+
+### 3. Elle
+
+1. Sağdaki **Releases** bölümünden son sürümün `TiffViewer-vN.zip` dosyasını indirin.
+2. Zip'e çift tıklayın, çıkan **TIFF Viewer** uygulamasını **Programlar** klasörüne sürükleyin.
+3. İlk açılışta macOS "geliştiricisi doğrulanamadı" uyarısı verir (program App Store'dan gelmediği için). Uyarıyı kapatın, **Sistem Ayarları → Gizlilik ve Güvenlik**'te en altta **Yine de Aç**'a basın. Bu yalnızca bir kez gerekir.
+
+### Varsayılan uygulama yapın
+
+Terminal ya da elle kurduysanız, TIFF'lerin hep bununla açılması için: herhangi bir `.tif` dosyasına sağ tıklayın → **Bilgi Al** → **Birlikte Aç**: *TIFF Viewer* → **Tümünü Değiştir**.
+
+Artık TIFF'e çift tıklamanız yeterli. Sonraki sürümler kendiliğinden gelir.
 
 ## Bilinen sınırlar
 

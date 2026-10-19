@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>fthmrl tiff viewer</string>
+	<string>TIFF Viewer</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -28,7 +28,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.meralavukatlik.tiffokuyucu</string>
 	<key>CFBundleName</key>
-	<string>fthmrl tiff viewer</string>
+	<string>TIFF Viewer</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

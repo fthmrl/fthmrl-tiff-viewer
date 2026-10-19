@@ -1,7 +1,7 @@
 import AppKit
 import ImageIO
 
-// fthmrl tiff viewer: TIFF'i Önizleme'de açar. Önizleme'nin açamadığı eski JPEG sıkıştırmalı
+// TIFF Viewer: TIFF'i Önizleme'de açar. Önizleme'nin açamadığı eski JPEG sıkıştırmalı
 // TIFF'lerde sayfaları geçici bir PDF'e koyup onu açar; asıl dosyaya dokunmaz.
 
 func u16(_ d: Data, _ o: Int, _ le: Bool) -> Int {
@@ -56,7 +56,7 @@ func needsHelp(_ url: URL) -> Bool {
 func makePDF(_ url: URL) -> URL? {
     let imgs = pages(url)
     if imgs.isEmpty { return nil }
-    let dir = FileManager.default.temporaryDirectory.appendingPathComponent("fthmrl tiff viewer/\(UUID().uuidString)")
+    let dir = FileManager.default.temporaryDirectory.appendingPathComponent("TIFF Viewer/\(UUID().uuidString)")
     try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
     let pdf = dir.appendingPathComponent(url.deletingPathExtension().lastPathComponent + ".pdf")
     guard let ctx = CGContext(pdf as CFURL, mediaBox: nil, nil) else { return nil }
@@ -85,9 +85,25 @@ let YENILIKLER: [Int: [String]] = [
         "Her güncellemeden sonra yenilikleri bir kez gösterir."],
     3: ["Güncellemeler artık GitHub'dan da gelir; programı paylaştığınız meslektaşlarınız da yeni sürümleri alır.",
         "Belgeleriniz bilgisayarınızdan hiçbir yere gönderilmez; internete yalnızca yeni sürüm var mı diye bakılır."],
+    4: ["Uygulamanın adı artık TIFF Viewer."],
 ]
 
-let GITHUB_DEPO = "fthmrl/fthmrl-tiff-viewer"
+let GITHUB_DEPO = "fthmrl/tiff-viewer"
+let UYGULAMA_ADI = "TIFF Viewer"
+let ESKI_ADLAR = ["fthmrl tiff viewer.app", "TIFF Okuyucu.app"]
+
+/// Uygulamanın diskteki yeri; eski adla kuruluysa adiDuzelt() yeni yeri yazar.
+var uygulamaYolu = Bundle.main.bundleURL
+
+/// v3 ve öncesinden güncellenen kurulumlarda uygulama dosyasının adını "TIFF Viewer.app" yapar.
+func adiDuzelt() {
+    let fm = FileManager.default
+    guard ESKI_ADLAR.contains(uygulamaYolu.lastPathComponent) else { return }
+    let yeni = uygulamaYolu.deletingLastPathComponent().appendingPathComponent(UYGULAMA_ADI + ".app")
+    guard !fm.fileExists(atPath: yeni.path), (try? fm.moveItem(at: uygulamaYolu, to: yeni)) != nil else { return }
+    uygulamaYolu = yeni
+    _ = calistir("/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister", ["-f", yeni.path])
+}
 
 struct SurumBilgisi: Decodable { let surum: Int; let dosya: String; let notlar: [String]? }
 
@@ -157,13 +173,13 @@ func enYeniSurum() -> (SurumBilgisi, URL)? {
 /// Yeni sürüm varsa sorar; kabul edilirse kurar, yeni sürümü aynı dosyalarla açar ve true döner.
 func guncellemeVarsaSor(_ urls: [URL]) -> Bool {
     guard let (b, kaynak) = enYeniSurum() else { return false }
-    var metin = "fthmrl tiff viewer v\(b.surum) yayımlandı (yüklü olan: v\(SURUM))."
+    var metin = "TIFF Viewer v\(b.surum) yayımlandı (yüklü olan: v\(SURUM))."
     if let n = b.notlar, !n.isEmpty { metin += "\n\n" + n.map { "• " + $0 }.joined(separator: "\n") }
     metin += "\n\nYeni sürüm yüklensin mi?"
     if uyari("Yeni sürüm var", metin, ["Yükle", "Sonra"]) != 0 { return false }
 
     let fm = FileManager.default
-    let gecici = fm.temporaryDirectory.appendingPathComponent("fthmrl-guncelleme-\(UUID().uuidString)")
+    let gecici = fm.temporaryDirectory.appendingPathComponent("tiffviewer-guncelleme-\(UUID().uuidString)")
     try? fm.createDirectory(at: gecici, withIntermediateDirectories: true)
     var zip = kaynak
     if !kaynak.isFileURL {
@@ -174,7 +190,7 @@ func guncellemeVarsaSor(_ urls: [URL]) -> Bool {
         }
     }
     let acilan = gecici.appendingPathComponent("acilan")
-    let hedef = Bundle.main.bundleURL
+    let hedef = uygulamaYolu
     guard calistir("/usr/bin/ditto", ["-x", "-k", zip.path, acilan.path]),
           let yeni = (try? fm.contentsOfDirectory(at: acilan, includingPropertiesForKeys: nil))?
               .first(where: { $0.pathExtension == "app" }),
@@ -202,6 +218,7 @@ func yenilikleriGoster() {
 
 /// Açılışta önce güncelleme, sonra yenilikler; true ise bu örnek kapanacak.
 func acilisKontrolleri(_ urls: [URL]) -> Bool {
+    adiDuzelt()
     if guncellemeVarsaSor(urls) { return true }
     yenilikleriGoster()
     return false
