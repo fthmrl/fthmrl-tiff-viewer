@@ -86,4 +86,4 @@ MIT — özgürce kullanabilir, paylaşabilir ve değiştirebilirsiniz. Ayrınt�
 
 ---
 
-<p align="center">Av. Fatih Meral · Meral Avukatlık Bürosu</p>
+<p align="center">Av. Fatih MERAL · Meral Avukatlık Bürosu</p>
