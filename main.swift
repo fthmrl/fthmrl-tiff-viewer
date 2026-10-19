@@ -88,6 +88,7 @@ let YENILIKLER: [Int: [String]] = [
     4: ["Uygulamanın adı artık TIFF Viewer."],
     5: ["Yeni simge: siyah-beyaz, 8-bit piksel tarzı."],
     6: ["Uygulama kimliği com.fthmrl.tiffokuyucu oldu; TIFF'ler eskisi gibi TIFF Viewer ile açılır."],
+    7: ["v6'ya güncellemeden sonra TIFF'ler Önizleme'ye düştüyse TIFF Viewer yeniden varsayılan olur."],
 ]
 
 let GITHUB_DEPO = "fthmrl/tiff-viewer"
@@ -108,13 +109,17 @@ func adiDuzelt() {
 }
 
 /// v6'da uygulama kimliği com.meralavukatlik.tiffokuyucu -> com.fthmrl.tiffokuyucu oldu. macOS varsayılan
-/// uygulamayı kimlikle tuttuğu için TIFF'lerin varsayılanı eski kimlikse yeni kimliğe taşınır.
+/// uygulamayı kimlikle tuttuğu için eski uygulama kalkınca TIFF'ler Önizleme'ye düşebilir. Yeni kimlikle
+/// ilk açılışta, bu Mac'te eski kurulum kullanılmışsa (ayarı varsa) TIFF Viewer yeniden varsayılan yapılır.
 func varsayilaniTasi() {
     let eski = "com.meralavukatlik.tiffokuyucu"
-    guard let yeni = Bundle.main.bundleIdentifier, yeni != eski else { return }
+    let ud = UserDefaults.standard
+    guard let yeni = Bundle.main.bundleIdentifier, yeni != eski, !ud.bool(forKey: "kimlikTasindi") else { return }
+    ud.set(true, forKey: "kimlikTasindi")
+    let eskiKurulum = (UserDefaults(suiteName: eski)?.integer(forKey: "gorulenSurum") ?? 0) > 0
     for tur in ["public.tiff"] {
-        guard let simdiki = LSCopyDefaultRoleHandlerForContentType(tur as CFString, .all)?.takeRetainedValue() as String?,
-              simdiki.lowercased() == eski else { continue }
+        let simdiki = (LSCopyDefaultRoleHandlerForContentType(tur as CFString, .all)?.takeRetainedValue() as String?)?.lowercased()
+        guard simdiki == eski || (eskiKurulum && simdiki != yeni.lowercased()) else { continue }
         LSSetDefaultRoleHandlerForContentType(tur as CFString, .all, yeni as CFString)
     }
 }
