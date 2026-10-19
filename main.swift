@@ -87,6 +87,7 @@ let YENILIKLER: [Int: [String]] = [
         "Belgeleriniz bilgisayarınızdan hiçbir yere gönderilmez; internete yalnızca yeni sürüm var mı diye bakılır."],
     4: ["Uygulamanın adı artık TIFF Viewer."],
     5: ["Yeni simge: siyah-beyaz, 8-bit piksel tarzı."],
+    6: ["Uygulama kimliği com.fthmrl.tiffokuyucu oldu; TIFF'ler eskisi gibi TIFF Viewer ile açılır."],
 ]
 
 let GITHUB_DEPO = "fthmrl/tiff-viewer"
@@ -104,6 +105,18 @@ func adiDuzelt() {
     guard !fm.fileExists(atPath: yeni.path), (try? fm.moveItem(at: uygulamaYolu, to: yeni)) != nil else { return }
     uygulamaYolu = yeni
     _ = calistir("/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister", ["-f", yeni.path])
+}
+
+/// v6'da uygulama kimliği com.meralavukatlik.tiffokuyucu -> com.fthmrl.tiffokuyucu oldu. macOS varsayılan
+/// uygulamayı kimlikle tuttuğu için TIFF'lerin varsayılanı eski kimlikse yeni kimliğe taşınır.
+func varsayilaniTasi() {
+    let eski = "com.meralavukatlik.tiffokuyucu"
+    guard let yeni = Bundle.main.bundleIdentifier, yeni != eski else { return }
+    for tur in ["public.tiff"] {
+        guard let simdiki = LSCopyDefaultRoleHandlerForContentType(tur as CFString, .all)?.takeRetainedValue() as String?,
+              simdiki.lowercased() == eski else { continue }
+        LSSetDefaultRoleHandlerForContentType(tur as CFString, .all, yeni as CFString)
+    }
 }
 
 struct SurumBilgisi: Decodable { let surum: Int; let dosya: String; let notlar: [String]? }
@@ -220,6 +233,7 @@ func yenilikleriGoster() {
 /// Açılışta önce güncelleme, sonra yenilikler; true ise bu örnek kapanacak.
 func acilisKontrolleri(_ urls: [URL]) -> Bool {
     adiDuzelt()
+    varsayilaniTasi()
     if guncellemeVarsaSor(urls) { return true }
     yenilikleriGoster()
     return false

@@ -26,7 +26,7 @@
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.meralavukatlik.tiffokuyucu</string>
+	<string>com.fthmrl.tiffokuyucu</string>
 	<key>CFBundleName</key>
 	<string>TIFF Viewer</string>
 	<key>CFBundlePackageType</key>
