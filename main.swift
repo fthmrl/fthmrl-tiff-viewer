@@ -86,6 +86,7 @@ let YENILIKLER: [Int: [String]] = [
     3: ["Güncellemeler artık GitHub'dan da gelir; programı paylaştığınız meslektaşlarınız da yeni sürümleri alır.",
         "Belgeleriniz bilgisayarınızdan hiçbir yere gönderilmez; internete yalnızca yeni sürüm var mı diye bakılır."],
     4: ["Uygulamanın adı artık TIFF Viewer."],
+    5: ["Yeni simge: siyah-beyaz, 8-bit piksel tarzı."],
 ]
 
 let GITHUB_DEPO = "fthmrl/tiff-viewer"
