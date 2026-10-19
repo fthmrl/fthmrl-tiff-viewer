@@ -80,6 +80,16 @@ Kendiniz derlemek isterseniz (Xcode Komut Satırı Araçları yeterli):
 swiftc -O main.swift -o tiffokuyucu
 ```
 
+## Görüş, öneri ve hata bildirimi
+
+Programın gelişmesine katkınız çok değerli. Bir isteğiniz, öneriniz ya da karşılaştığınız bir sorun varsa:
+
+👉 **[Öneri / istek gönderin ya da hata bildirin](https://github.com/fthmrl/tiff-viewer/issues/new/choose)**
+
+Gönderilenleri **[Issues](https://github.com/fthmrl/tiff-viewer/issues)** sekmesinde görebilir, başkalarının isteklerine 👍 ile destek verebilirsiniz. Bildirim göndermek için ücretsiz bir GitHub hesabı gerekir.
+
+> ⚠️ Bu sayfa herkese açıktır; lütfen müvekkil belgesi, dosya numarası ya da kişisel bilgi paylaşmayın.
+
 ## Lisans
 
 MIT — özgürce kullanabilir, paylaşabilir ve değiştirebilirsiniz. Ayrıntılar [`LICENSE`](LICENSE) dosyasında.

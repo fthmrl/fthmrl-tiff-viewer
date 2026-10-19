@@ -23,6 +23,7 @@ if [[ ! -d $GIT/.git ]]; then
   git -C $GIT remote add origin https://github.com/$DEPO.git
 fi
 for f in main.swift icon.swift Info.plist AppIcon.icns simge.png README.md LICENSE yayimla.sh; do cp "$K/$f" $GIT/; done
+cp -R "$K/.github" $GIT/
 git -C $GIT add -A
 git -C $GIT -c user.name=fthmrl -c user.email=fthmrl@users.noreply.github.com commit -q -m "v$N" || true
 git -C $GIT -c credential.helper= -c credential.helper="!$GH auth git-credential" push -q -u origin main

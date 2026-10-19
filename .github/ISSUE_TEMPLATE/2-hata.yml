@@ -1,0 +1,34 @@
+name: 🐞 Hata bildirimi
+description: Program beklediğiniz gibi çalışmadıysa bildirin
+title: "Hata: "
+labels: ["hata"]
+body:
+  - type: markdown
+    attributes:
+      value: "⚠️ Lütfen müvekkil belgesi, dosya numarası ya da kişisel bilgi **eklemeyin**; bu sayfa herkese açıktır. Sorunu belgenin içeriğini göstermeden anlatmanız yeterli."
+  - type: textarea
+    id: ne-oldu
+    attributes:
+      label: Ne oldu?
+      description: Ne yaptınız, ne bekliyordunuz, ne oldu?
+    validations:
+      required: true
+  - type: input
+    id: surum
+    attributes:
+      label: Program sürümü
+      description: "Programlar'da TIFF Viewer'a sağ tık → Bilgi Al → Sürüm (ör. 5)"
+  - type: input
+    id: macos
+    attributes:
+      label: macOS sürümü
+      description: "Apple menüsü → Bu Mac Hakkında (ör. macOS 26)"
+  - type: dropdown
+    id: belge
+    attributes:
+      label: Belge nereden geldi?
+      options:
+        - UYAP
+        - EBYS
+        - Tarayıcı / tarama
+        - Diğer / bilmiyorum

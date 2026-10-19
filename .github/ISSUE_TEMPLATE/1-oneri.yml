@@ -1,0 +1,20 @@
+name: 💡 Öneri / İstek
+description: Programa eklenmesini istediğiniz bir özellik ya da iyileştirme
+title: "Öneri: "
+labels: ["öneri"]
+body:
+  - type: textarea
+    id: istek
+    attributes:
+      label: Ne istiyorsunuz?
+      description: Eklenmesini ya da değişmesini istediğiniz şeyi kısaca anlatın.
+    validations:
+      required: true
+  - type: textarea
+    id: neden
+    attributes:
+      label: Hangi işinizi kolaylaştırır?
+      description: İsteğe bağlı. Örneğin hangi tür belgeyle çalışırken ihtiyaç duydunuz?
+  - type: markdown
+    attributes:
+      value: "⚠️ Lütfen müvekkil belgesi, dosya numarası ya da kişisel bilgi **eklemeyin**; bu sayfa herkese açıktır."
