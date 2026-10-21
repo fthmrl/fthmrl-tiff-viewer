@@ -24,7 +24,8 @@ func pages(_ url: URL) -> [CGImage] {
         for k in 0..<n {
             let e = off + 2 + k * 12
             guard e + 12 <= d.count else { break }
-            tags[u16(d, e, le)] = u32(d, e + 8, le)
+            // SHORT (tür 3) değerler alanın ilk iki baytındadır; büyük-endian dosyalarda u32 yanlış okur
+            tags[u16(d, e, le)] = u16(d, e + 2, le) == 3 ? u16(d, e + 8, le) : u32(d, e + 8, le)
         }
         var img: CGImage? = nil
         if tags[259] != 6, let s = src { img = CGImageSourceCreateImageAtIndex(s, i, nil) }
@@ -45,6 +46,8 @@ func needsHelp(_ url: URL) -> Bool {
     guard let s = CGImageSourceCreateWithURL(url as CFURL, nil) else { return true }
     let n = CGImageSourceGetCount(s)
     if n == 0 { return true }
+    // Çok sayfalı TIFF'i Önizleme bazen tek sayfa gösteriyor; sayfaları PDF'e koyunca hepsi görünür.
+    if n > 1 { return true }
     for i in 0..<n where CGImageSourceCreateImageAtIndex(s, i, nil) == nil { return true }
     // Eski JPEG (sıkıştırma 6) ImageIO'da bozuk/boş çıkabiliyor; her durumda yardımla aç.
     if let p = CGImageSourceCopyPropertiesAtIndex(s, 0, nil) as? [CFString: Any],
@@ -89,6 +92,7 @@ let YENILIKLER: [Int: [String]] = [
     6: ["Uygulama kimliği com.fthmrl.tiffokuyucu oldu; TIFF'ler eskisi gibi TIFF Viewer ile açılır."],
     7: ["v6'ya güncellemeden sonra TIFF'ler Önizleme'ye düştüyse TIFF Viewer yeniden varsayılan olur."],
     8: ["Güncellemeler yalnız GitHub'dan denetlenir; uygulama artık OneDrive'a erişmez, bu yüzden OneDrive izni sormaz."],
+    9: ["Çok sayfalı TIFF'lerin bütün sayfaları Önizleme'de görünür (önceden bazılarında yalnız ilk sayfa çıkıyordu)."],
 ]
 
 let GITHUB_DEPO = "fthmrl/tiff-viewer"
